@@ -8,18 +8,18 @@ package Host;
 
 import User.UserUI;
 
-import com.alibaba.fastjson.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class HostUI extends UserUI {
 
     // the file's path
     String filePath;
+    // the host
+    Host host;
 
     public HostUI(){
         // initialize the window
@@ -61,7 +61,7 @@ public class HostUI extends UserUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    Host.newCanvas();
+                    host.newCanvas();
                 } catch (RemoteException ex) {
                     notificationWindow("Remote Error when new a canvas");
                 }
@@ -79,7 +79,7 @@ public class HostUI extends UserUI {
                 if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     String fileAbsolutePath = fileChooser.getSelectedFile().getAbsolutePath();
                     filePath = fileAbsolutePath;
-                    Host.loadFromFile(filePath);
+                    host.loadFromFile(filePath);
                 }
             }
         });
@@ -91,7 +91,7 @@ public class HostUI extends UserUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (filePath != null) {
-                    Host.saveToFile(filePath);
+                    host.saveToFile(filePath);
                 }else{
                     JOptionPane.showMessageDialog(null, "You did not open a file before. " +
                             "Try to use 'Save As' button to save this canvas as a new file",
@@ -111,7 +111,7 @@ public class HostUI extends UserUI {
                 if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                     String fileAbsolutePath = fileChooser.getSelectedFile().getAbsolutePath();
                     filePath = fileAbsolutePath;
-                    Host.saveToFile(filePath);
+                    host.saveToFile(filePath);
                 }
             }
         });
@@ -124,7 +124,7 @@ public class HostUI extends UserUI {
             public void mouseClicked(MouseEvent e) {
                 try {
                     wholeWindow.setVisible(false);
-                    Host.closeWhiteBoard();
+                    host.closeWhiteBoard();
                 } catch (RemoteException ex) {
                     notificationWindow("Remote Error when close the window");
                 }
@@ -138,11 +138,15 @@ public class HostUI extends UserUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String userName = JOptionPane.showInputDialog("Please input the user name you want to kick.");
-                try {
-                    Host.kickGuest(userName);
-                } catch (RemoteException ex) {
-                    notificationWindow("Remote Error when kick the user");
-                }
+                new Thread(){
+                    public void run(){
+                        try {
+                            host.kickGuest(userName);
+                        } catch (RemoteException ex) {
+                            notificationWindow("Remote Error when kick the user");
+                        }
+                    }
+                }.start();
             }
         });
         container.add(KickButton);
@@ -152,7 +156,7 @@ public class HostUI extends UserUI {
     protected void closeWindowEvent(){
         try {
             wholeWindow.setVisible(false);
-            Host.closeWhiteBoard();
+            host.closeWhiteBoard();
         } catch (RemoteException e) {
             notificationWindow("Remote Error when close the window");
         }

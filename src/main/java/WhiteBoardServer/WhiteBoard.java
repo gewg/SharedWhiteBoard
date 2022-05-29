@@ -69,7 +69,7 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
     }
 
     /**
-     *
+     * Be called when new guest wants to join the server
      * @param user
      * @return
      * @throws RemoteException
@@ -80,6 +80,11 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
         return host.judgeRequest(user);
     }
 
+    /**
+     * Be called when a guest wants to quit the server
+     * @param userName
+     * @throws RemoteException
+     */
     @Override
     public void guestQuit(String userName) throws RemoteException {
         try {
@@ -104,7 +109,7 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
 
 
     /**
-     * Board the message to all users
+     * Be called when a user sends a message
      * @param message
      * @throws RemoteException
      */
@@ -116,7 +121,7 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
     }
 
     /**
-     * Board the new draw to all users
+     * Be called when a guest adds a new shape
      * @param newRecord
      * @throws RemoteException
      */
@@ -131,7 +136,7 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
     }
 
     /**
-     * Board the entire new canvas to all users
+     * Be called when the host new a canvas
      * @param newCanvas
      * @throws RemoteException
      */
@@ -158,7 +163,7 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
     }
 
     /**
-     * Board the users with new user list
+     * Be called when a new user join in the server successfully
      * @throws RemoteException
      */
     private void boardNewUser() throws RemoteException {
@@ -168,7 +173,7 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
     }
 
     /**
-     * Kick the user out
+     * Be called when the host wants to kick the user
      * @param userName
      * @return
      * @throws RemoteException
@@ -191,11 +196,12 @@ public class WhiteBoard extends UnicastRemoteObject implements iWhiteBoard {
                         eachUser.kickNotification();
                         result = true;
                     }
-
                 }
             }
         }catch (RemoteException e){
-            // ignore the RemoteException when closing remote object
+            // While the remote object will be closed, the connection will lose.
+            // Thus the remote exception is the normal exception
+            result = true;
         }
         return result;
     }

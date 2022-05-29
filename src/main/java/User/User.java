@@ -55,7 +55,7 @@ public class User extends UnicastRemoteObject implements iUser{
     /**
      * Connect to the WhiteBoard RMI
      */
-    public void connectWhiteBoardServer(String portAddr, String portNum) throws MalformedURLException, NotBoundException, RemoteException{
+    public void connectWhiteBoardServer(String portAddr, String portNum) throws MalformedURLException, NotBoundException, RemoteException, IllegalArgumentException{
         whiteBoard = (iWhiteBoard) Naming.lookup("rmi://" + portAddr + ":" + portNum + "/whiteboard");
     }
 
@@ -69,7 +69,7 @@ public class User extends UnicastRemoteObject implements iUser{
             try {
                 whiteBoard.boardDraw(newRecord);
             } catch (RemoteException e) {
-                System.out.println(e);
+                ui.notificationWindow("Remote Error when board the new shape to other users");
             }
         }
     }
@@ -86,13 +86,13 @@ public class User extends UnicastRemoteObject implements iUser{
                 message = userName + ": " + message + "\n";
                 whiteBoard.boardMsg(message);
             } catch (RemoteException e) {
-                System.out.println(e);
+                ui.notificationWindow("Remote Error when board the new message to other users");
             }
         }
     }
 
     /**
-     * Accept the record list and draw them on the canvas
+     * Repaint the canvas
      */
     @Override
     public void rePaint(){
@@ -140,6 +140,7 @@ public class User extends UnicastRemoteObject implements iUser{
         return authority;
     }
 
+
     /**
      * Accept the message and show on the UI
      * @param message
@@ -150,13 +151,6 @@ public class User extends UnicastRemoteObject implements iUser{
         ui.getChatArea().append(message);
     }
 
-    /**
-     * Check whether user is allowed to join the server
-     * @return
-     */
-    public boolean isJoinServerAllow() {
-        return joinServerAllow;
-    }
 
     /**
      * Set the user's authority to join the server

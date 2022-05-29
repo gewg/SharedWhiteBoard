@@ -23,9 +23,7 @@ public class UIListener implements ActionListener, MouseListener, MouseMotionLis
     private static Color color = Color.BLACK;
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
+    public void actionPerformed(ActionEvent e) {}
 
     @Override
     public void mouseClicked(MouseEvent e) {

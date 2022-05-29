@@ -41,7 +41,7 @@ public class Host extends User implements Runnable{
             WhiteBoardServer.createWhiteBoardServer(portAddr, portNum, this);
             // connect with the WhiteBoard Server
             connectWhiteBoardServer(portAddr, portNum);
-        } catch (MalformedURLException | NotBoundException | RemoteException | AlreadyBoundException e) {
+        } catch (MalformedURLException | NotBoundException | RemoteException | AlreadyBoundException | IllegalArgumentException e) {
             ui.notificationWindow("Can not connect to the WhiteBoard Server. Check the Address and Port Number.");
             System.exit(0);
         }
@@ -90,8 +90,15 @@ public class Host extends User implements Runnable{
      * @return
      * @throws RemoteException
      */
-    protected static Boolean kickGuest(String userName) throws RemoteException {
-        return whiteBoard.kickGuest(userName);
+    protected static void kickGuest(String userName) throws RemoteException {
+        Boolean flag;
+        flag = whiteBoard.kickGuest(userName);
+
+        if (flag){
+            ui.notificationWindow("Successfully");
+        }else{
+            ui.notificationWindow("Kick user failed. Check the username");
+        }
     }
 
     /**
@@ -176,6 +183,11 @@ public class Host extends User implements Runnable{
         }
     }
 
+    /**
+     * Convert the input from file to the acceptable format
+     * @param inputJson
+     * @return
+     */
     private static JSONObject convertInputFormat(JSONObject inputJson){
         // convert the Color Object into color format
         JSONObject eachJsonRecordColor = (JSONObject)(inputJson.get("color"));

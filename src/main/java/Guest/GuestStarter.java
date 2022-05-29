@@ -16,7 +16,7 @@ public class GuestStarter {
         // the default value
         String portAddr = "localhost";
         String portNum = "8888";
-        String userName = "Host";
+        String userName = "Guest";
 
         try {
             // capture the port address and number

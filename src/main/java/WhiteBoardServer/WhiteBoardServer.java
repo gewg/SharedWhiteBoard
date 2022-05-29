@@ -15,13 +15,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class WhiteBoardServer {
-
     /**
      *
      * @param portAddr
      * @param portNum
      */
-    public static void createWhiteBoardServer(String portAddr, String portNum, iUser host) throws RemoteException, MalformedURLException, AlreadyBoundException{
+    public static void createWhiteBoardServer(String portAddr, String portNum, iUser host) throws RemoteException, MalformedURLException, AlreadyBoundException, IllegalArgumentException{
         // enroll the port number for white board RMI server
         iWhiteBoard whiteBoard = new WhiteBoard(host);
         LocateRegistry.createRegistry(Integer.parseInt(portNum));

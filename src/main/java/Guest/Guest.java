@@ -31,7 +31,7 @@ public class Guest extends User implements Runnable{
         try {
             // connect with the WhiteBoard Server
             connectWhiteBoardServer(portAddr, portNum);
-        } catch (MalformedURLException | NotBoundException | RemoteException e) {
+        } catch (MalformedURLException | NotBoundException | RemoteException | IllegalArgumentException e) {
             ui.notificationWindow("Can not connect to the WhiteBoard Server. Check the Address and Port Number.");
             System.exit(0);
         }
@@ -57,13 +57,17 @@ public class Guest extends User implements Runnable{
         }
     }
 
-
+    /**
+     * Notify the guest has been kicked
+     */
     @Override
     public void kickNotification(){
         ((GuestUI)ui).kickNotification();
     }
 
-
+    /**
+     * Notify the host quit
+     */
     @Override
     public void hostQuit(){
         ((GuestUI)ui).hostQuit();

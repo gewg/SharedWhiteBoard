@@ -8,10 +8,8 @@ package Guest;
 
 import User.UserUI;
 
-import com.alibaba.fastjson.JSONObject;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class GuestUI extends UserUI {
     /**
@@ -56,6 +54,9 @@ public class GuestUI extends UserUI {
         System.exit(0);
     }
 
+    /**
+     * Notify other users, this guest quit
+     */
     @Override
     protected void closeWindowEvent(){
         Guest.guestQuit();

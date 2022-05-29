@@ -40,6 +40,7 @@ public class HostStarter {
             // set the RMI port address and number
             host.setPort(portAddr, portNum);
             host.setUI(ui);
+            // run the host as thread
             Thread hostThread = new Thread(host);
             hostThread.start();
 
